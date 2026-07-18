@@ -1,8 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --surface: #ffffff;
+  --surface-soft: #eef2ff;
+  --border: rgba(15, 23, 42, 0.12);
+  --primary: #7c3aed;
+  --secondary: #14b8a6;
+  --muted: #64748b;
+  --success: #059669;
 }
 
 @theme inline {
@@ -12,15 +19,46 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
 }
 
 body {
-  background: var(--background);
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(124, 58, 237, 0.16), transparent 30%),
+    radial-gradient(circle at top right, rgba(20, 184, 166, 0.12), transparent 24%),
+    linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: rgba(124, 58, 237, 0.18);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.12);
+  backdrop-filter: blur(18px);
+}
+
+.section-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.96));
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(124, 58, 237, 0.14);
+  background: rgba(124, 58, 237, 0.08);
+  color: #5b21b6;
 }
