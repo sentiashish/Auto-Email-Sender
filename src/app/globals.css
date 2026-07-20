@@ -4,8 +4,8 @@
   --background: #f8fafc;
   --foreground: #0f172a;
   --surface: #ffffff;
-  --surface-soft: #eef2ff;
-  --border: rgba(15, 23, 42, 0.12);
+  --surface-soft: #f8fafc;
+  --border: rgba(15, 23, 42, 0.1);
   --primary: #7c3aed;
   --secondary: #14b8a6;
   --muted: #64748b;
@@ -29,10 +29,7 @@ html {
 
 body {
   min-height: 100%;
-  background:
-    radial-gradient(circle at top left, rgba(124, 58, 237, 0.16), transparent 30%),
-    radial-gradient(circle at top right, rgba(20, 184, 166, 0.12), transparent 24%),
-    linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  background: linear-gradient(180deg, #f8fafc 0%, #f5f7fb 100%);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
@@ -41,24 +38,31 @@ body {
   background: rgba(124, 58, 237, 0.18);
 }
 
-.glass-panel {
-  background: rgba(255, 255, 255, 0.86);
+.app-shell {
+  position: relative;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.96);
   border: 1px solid var(--border);
-  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.12);
-  backdrop-filter: blur(18px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
 }
 
-.section-card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.96));
-  border: 1px solid rgba(148, 163, 184, 0.22);
-  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+.panel-strong {
+  background: #ffffff;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
 }
 
-.chip {
+.badge {
   display: inline-flex;
   align-items: center;
   border-radius: 999px;
-  border: 1px solid rgba(124, 58, 237, 0.14);
-  background: rgba(124, 58, 237, 0.08);
-  color: #5b21b6;
+  border: 1px solid rgba(124, 58, 237, 0.12);
+  background: rgba(124, 58, 237, 0.06);
+  color: #6d28d9;
+}
+
+.soft-border {
+  border-color: rgba(148, 163, 184, 0.18);
 }

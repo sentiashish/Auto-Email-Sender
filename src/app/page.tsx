@@ -173,109 +173,97 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
+    <main className="app-shell min-h-screen px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
-        <section className="glass-panel overflow-hidden rounded-[2rem] px-6 py-8 sm:px-10 sm:py-10">
-          <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-            <div className="space-y-6">
-              <div className="chip px-4 py-2 text-sm font-semibold uppercase tracking-[0.22em]">
-                Bulk email from Excel
-              </div>
-              <div className="space-y-4">
-                <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-                  Upload one spreadsheet and send personalized emails to every row.
+        <header className="panel rounded-[1.25rem] px-5 py-5 sm:px-6">
+          <div className="flex flex-col gap-5 border-b border-slate-200 pb-5 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl space-y-3">
+              <span className="badge px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em]">
+                Bulk email workspace
+              </span>
+              <div className="space-y-2">
+                <h1 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+                  Send personalized email without leaving the spreadsheet workflow.
                 </h1>
-                <p className="max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-lg">
-                  Drop in a worksheet, choose the recipient column, write one template, and send the same campaign
-                  to all contacts without typing each address by hand.
+                <p className="max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
+                  Import rows, verify the destination column, review the preview, and send through SMTP with a
+                  straightforward interface.
                 </p>
-              </div>
-              <div className="flex flex-wrap gap-3 text-sm text-slate-600">
-                <span className="rounded-full bg-white/80 px-4 py-2 shadow-sm ring-1 ring-slate-200">
-                  Excel import
-                </span>
-                <span className="rounded-full bg-white/80 px-4 py-2 shadow-sm ring-1 ring-slate-200">
-                  Template variables
-                </span>
-                <span className="rounded-full bg-white/80 px-4 py-2 shadow-sm ring-1 ring-slate-200">
-                  SMTP send
-                </span>
               </div>
             </div>
 
-            <div className="section-card rounded-[1.75rem] p-5 sm:p-6">
-              <p className="text-sm font-medium uppercase tracking-[0.2em] text-slate-500">Status</p>
-              <div className="mt-4 space-y-3">
-                <div className="rounded-2xl bg-slate-950 px-4 py-4 text-sm text-white">
-                  <div className="flex items-center justify-between gap-3">
-                    <span>Workbook</span>
-                    <span className="text-emerald-300">{fileName}</span>
-                  </div>
-                  <div className="mt-2 flex items-center justify-between gap-3 text-slate-300">
-                    <span>Recipients</span>
-                    <span>{records.length}</span>
-                  </div>
-                  <div className="mt-2 flex items-center justify-between gap-3 text-slate-300">
-                    <span>Mail column</span>
-                    <span>{emailColumn || "Not selected"}</span>
-                  </div>
-                </div>
-                <p
-                  className={`rounded-2xl px-4 py-3 text-sm ${
-                    status.type === "error"
-                      ? "bg-rose-50 text-rose-700"
-                      : status.type === "success"
-                        ? "bg-emerald-50 text-emerald-700"
-                        : status.type === "loading"
-                          ? "bg-amber-50 text-amber-700"
-                          : "bg-slate-50 text-slate-600"
-                  }`}
-                >
-                  {status.message}
-                </p>
-                <p
-                  className={`rounded-2xl px-4 py-3 text-sm ${
-                    connectionStatus.type === "error"
-                      ? "bg-rose-50 text-rose-700"
-                      : connectionStatus.type === "ready"
-                        ? "bg-emerald-50 text-emerald-700"
-                        : connectionStatus.type === "checking"
-                          ? "bg-amber-50 text-amber-700"
-                          : "bg-slate-50 text-slate-600"
-                  }`}
-                >
-                  {connectionStatus.message}
-                </p>
+            <div className="grid gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600 sm:grid-cols-3 lg:min-w-[28rem] lg:grid-cols-1">
+              <div className="flex items-center justify-between gap-3">
+                <span>Workbook</span>
+                <span className="font-medium text-slate-900">{fileName}</span>
+              </div>
+              <div className="flex items-center justify-between gap-3">
+                <span>Recipients</span>
+                <span className="font-medium text-slate-900">{records.length}</span>
+              </div>
+              <div className="flex items-center justify-between gap-3">
+                <span>Mail column</span>
+                <span className="font-medium text-slate-900">{emailColumn || "Not selected"}</span>
               </div>
             </div>
           </div>
-        </section>
 
-        <section className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
-          <div className="section-card rounded-[1.75rem] p-5 sm:p-6">
-            <div className="flex items-center justify-between gap-4">
+          <div className="mt-5 grid gap-3 lg:grid-cols-2">
+            <p
+              className={`rounded-2xl border px-4 py-3 text-sm ${
+                status.type === "error"
+                  ? "border-rose-200 bg-rose-50 text-rose-700"
+                  : status.type === "success"
+                    ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                    : status.type === "loading"
+                      ? "border-amber-200 bg-amber-50 text-amber-700"
+                      : "border-slate-200 bg-slate-50 text-slate-600"
+              }`}
+            >
+              {status.message}
+            </p>
+            <p
+              className={`rounded-2xl border px-4 py-3 text-sm ${
+                connectionStatus.type === "error"
+                  ? "border-rose-200 bg-rose-50 text-rose-700"
+                  : connectionStatus.type === "ready"
+                    ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                    : connectionStatus.type === "checking"
+                      ? "border-amber-200 bg-amber-50 text-amber-700"
+                      : "border-slate-200 bg-slate-50 text-slate-600"
+              }`}
+            >
+              {connectionStatus.message}
+            </p>
+          </div>
+        </header>
+
+        <section className="grid gap-6 xl:grid-cols-[0.92fr_1.16fr_0.92fr]">
+          <div className="panel rounded-[1.25rem] p-5 sm:p-6">
+            <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-xl font-semibold text-slate-950">1. Upload recipients</h2>
-                <p className="mt-1 text-sm text-slate-500">Use the first sheet of your Excel file.</p>
+                <h2 className="text-lg font-semibold text-slate-950">Source</h2>
+                <p className="mt-1 text-sm leading-6 text-slate-500">
+                  Upload a sheet and choose the column that contains email addresses.
+                </p>
               </div>
-              <label className="cursor-pointer rounded-full bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition hover:opacity-95">
+              <label className="cursor-pointer rounded-full bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-95">
                 Choose file
                 <input className="hidden" type="file" accept=".xlsx,.xls,.csv" onChange={handleFileUpload} />
               </label>
             </div>
 
-            <div className="mt-5 rounded-2xl border border-dashed border-slate-300 bg-white/80 p-5 text-sm text-slate-600">
-              <p className="font-medium text-slate-800">Expected columns</p>
+            <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Detected columns</p>
               <p className="mt-2 leading-6">
-                The app automatically looks for <span className="font-semibold">email</span>,{" "}
-                <span className="font-semibold">e-mail</span>, <span className="font-semibold">mail</span>, or a
-                similar column in Excel or CSV files.
+                The app looks for <span className="font-semibold">email</span>, <span className="font-semibold">e-mail</span>,
+                or <span className="font-semibold">mail</span> first.
               </p>
 
-              <label className="mt-5 block text-sm font-medium text-slate-700">
+              <label className="mt-4 block text-sm font-medium text-slate-700">
                 Recipient column
                 <select
-                  className="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none ring-0 transition focus:border-[var(--primary)]"
+                  className="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--primary)]"
                   value={emailColumn}
                   onChange={(event) => setEmailColumn(event.target.value)}
                 >
@@ -287,15 +275,15 @@ export default function Home() {
                 </select>
               </label>
 
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              <div className="mt-4 flex flex-wrap gap-2">
                 {headers.length > 0 ? (
                   headers.map((header) => (
-                    <span key={header} className="rounded-2xl bg-slate-100 px-3 py-2 text-xs font-medium text-slate-700">
+                    <span key={header} className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700">
                       {header}
                     </span>
                   ))
                 ) : (
-                  <span className="rounded-2xl bg-slate-100 px-3 py-2 text-xs font-medium text-slate-500">
+                  <span className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-500">
                     No file loaded yet
                   </span>
                 )}
@@ -303,12 +291,18 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="section-card rounded-[1.75rem] p-5 sm:p-6">
-            <h2 className="text-xl font-semibold text-slate-950">2. Compose and preview</h2>
-            <p className="mt-1 text-sm text-slate-500">
-              Use double braces like <span className="font-semibold">{"{{Name}}"}</span> to personalize each
-              email.
-            </p>
+          <div className="panel rounded-[1.25rem] p-5 sm:p-6">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h2 className="text-lg font-semibold text-slate-950">Compose</h2>
+                <p className="mt-1 text-sm leading-6 text-slate-500">
+                  Use <span className="font-semibold">{"{{Name}}"}</span> style placeholders for personalization.
+                </p>
+              </div>
+              <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-500">
+                Draft mode
+              </span>
+            </div>
 
             <div className="mt-5 space-y-4">
               <label className="block text-sm font-medium text-slate-700">
@@ -324,131 +318,148 @@ export default function Home() {
               <label className="block text-sm font-medium text-slate-700">
                 Message
                 <textarea
-                  className="mt-2 min-h-44 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 outline-none transition focus:border-[var(--primary)]"
+                  className="mt-2 min-h-56 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 outline-none transition focus:border-[var(--primary)]"
                   value={body}
                   onChange={(event) => setBody(event.target.value)}
                   placeholder="Write your message"
                 />
               </label>
 
-              <div className="rounded-2xl bg-slate-950 px-5 py-4 text-sm text-slate-100">
-                <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Preview</p>
-                <p className="mt-3 font-semibold text-white">{samplePreview.subject}</p>
-                <p className="mt-3 whitespace-pre-line leading-6 text-slate-200">{samplePreview.body}</p>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <button
+                  className="inline-flex items-center justify-center rounded-full bg-[var(--secondary)] px-6 py-3 text-sm font-semibold text-white transition hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
+                  type="button"
+                  onClick={handleSend}
+                  disabled={sending || records.length === 0}
+                >
+                  {sending ? "Sending..." : "Send all emails"}
+                </button>
+
+                <button
+                  className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+                  type="button"
+                  onClick={handleCheckConnection}
+                  disabled={checkingConnection}
+                >
+                  {checkingConnection ? "Checking..." : "Test SMTP connection"}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <div className="panel rounded-[1.25rem] p-5 sm:p-6">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-lg font-semibold text-slate-950">Preview</h2>
+                  <p className="mt-1 text-sm text-slate-500">What the first row will look like.</p>
+                </div>
+                <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+                  {records.length === 0 ? 0 : 1} sample
+                </span>
               </div>
 
-              <button
-                className="inline-flex items-center justify-center rounded-full bg-[var(--secondary)] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-teal-200 transition hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
-                type="button"
-                onClick={handleSend}
-                disabled={sending || records.length === 0}
-              >
-                {sending ? "Sending..." : "Send all emails"}
-              </button>
-
-              <button
-                className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
-                type="button"
-                onClick={handleCheckConnection}
-                disabled={checkingConnection}
-              >
-                {checkingConnection ? "Checking..." : "Test SMTP connection"}
-              </button>
+              <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-700">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Subject</p>
+                <p className="mt-2 font-semibold text-slate-950">{samplePreview.subject}</p>
+                <p className="mt-4 text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Message</p>
+                <p className="mt-2 whitespace-pre-line leading-6 text-slate-600">{samplePreview.body}</p>
+              </div>
             </div>
-          </div>
-        </section>
 
-        <section className="section-card rounded-[1.75rem] p-5 sm:p-6">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <h2 className="text-xl font-semibold text-slate-950">Recipient preview</h2>
-              <p className="mt-1 text-sm text-slate-500">First rows from the uploaded workbook.</p>
-            </div>
-            <span className="rounded-full bg-slate-100 px-4 py-2 text-sm font-medium text-slate-600">
-              {Math.min(records.length, 5)} shown
-            </span>
-          </div>
+            <div className="panel rounded-[1.25rem] p-5 sm:p-6">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-lg font-semibold text-slate-950">Recipient preview</h2>
+                  <p className="mt-1 text-sm text-slate-500">First rows from the uploaded workbook.</p>
+                </div>
+                <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+                  {Math.min(records.length, 5)} shown
+                </span>
+              </div>
 
-          <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white">
-            <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
-              <thead className="bg-slate-50 text-slate-500">
-                <tr>
-                  <th className="px-4 py-3 font-medium">Email</th>
-                  <th className="px-4 py-3 font-medium">Sample fields</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-200">
-                {records.slice(0, 5).map((record) => (
-                  <tr key={`${record.email}-${Object.keys(record.data).length}`}>
-                    <td className="px-4 py-3 font-medium text-slate-900">{record.email}</td>
-                    <td className="px-4 py-3 text-slate-600">
-                      {Object.entries(record.data)
-                        .slice(0, 4)
-                        .map(([key, value]) => `${key}: ${value}`)
-                        .join(" • ")}
-                    </td>
-                  </tr>
-                ))}
-                {records.length === 0 ? (
-                  <tr>
-                    <td className="px-4 py-6 text-slate-500" colSpan={2}>
-                      Upload a workbook to preview the recipient list.
-                    </td>
-                  </tr>
-                ) : null}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section className="section-card rounded-[1.75rem] p-5 sm:p-6">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <h2 className="text-xl font-semibold text-slate-950">Delivery report</h2>
-              <p className="mt-1 text-sm text-slate-500">Latest send results for each recipient.</p>
-            </div>
-            <span className="rounded-full bg-slate-100 px-4 py-2 text-sm font-medium text-slate-600">
-              {deliveryReport.length} rows
-            </span>
-          </div>
-
-          <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white">
-            <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
-              <thead className="bg-slate-50 text-slate-500">
-                <tr>
-                  <th className="px-4 py-3 font-medium">Recipient</th>
-                  <th className="px-4 py-3 font-medium">Status</th>
-                  <th className="px-4 py-3 font-medium">Details</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-200">
-                {deliveryReport.length > 0 ? (
-                  deliveryReport.map((item) => (
-                    <tr key={item.email}>
-                      <td className="px-4 py-3 font-medium text-slate-900">{item.email}</td>
-                      <td className="px-4 py-3">
-                        <span
-                          className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
-                            item.status === "sent"
-                              ? "bg-emerald-50 text-emerald-700"
-                              : "bg-rose-50 text-rose-700"
-                          }`}
-                        >
-                          {item.status}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-slate-600">{item.error ?? "Delivered successfully"}</td>
+              <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+                <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
+                  <thead className="bg-slate-50 text-slate-500">
+                    <tr>
+                      <th className="px-4 py-3 font-medium">Email</th>
+                      <th className="px-4 py-3 font-medium">Sample fields</th>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td className="px-4 py-6 text-slate-500" colSpan={3}>
-                      Run a send to see the per-recipient result report here.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200">
+                    {records.slice(0, 5).map((record) => (
+                      <tr key={`${record.email}-${Object.keys(record.data).length}`}>
+                        <td className="px-4 py-3 font-medium text-slate-900">{record.email}</td>
+                        <td className="px-4 py-3 text-slate-600">
+                          {Object.entries(record.data)
+                            .slice(0, 4)
+                            .map(([key, value]) => `${key}: ${value}`)
+                            .join(" • ")}
+                        </td>
+                      </tr>
+                    ))}
+                    {records.length === 0 ? (
+                      <tr>
+                        <td className="px-4 py-6 text-slate-500" colSpan={2}>
+                          Upload a workbook to preview the recipient list.
+                        </td>
+                      </tr>
+                    ) : null}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="panel rounded-[1.25rem] p-5 sm:p-6">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-lg font-semibold text-slate-950">Delivery report</h2>
+                  <p className="mt-1 text-sm text-slate-500">Latest send results for each recipient.</p>
+                </div>
+                <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+                  {deliveryReport.length} rows
+                </span>
+              </div>
+
+              <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+                <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
+                  <thead className="bg-slate-50 text-slate-500">
+                    <tr>
+                      <th className="px-4 py-3 font-medium">Recipient</th>
+                      <th className="px-4 py-3 font-medium">Status</th>
+                      <th className="px-4 py-3 font-medium">Details</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200">
+                    {deliveryReport.length > 0 ? (
+                      deliveryReport.map((item) => (
+                        <tr key={item.email}>
+                          <td className="px-4 py-3 font-medium text-slate-900">{item.email}</td>
+                          <td className="px-4 py-3">
+                            <span
+                              className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
+                                item.status === "sent"
+                                  ? "bg-emerald-50 text-emerald-700"
+                                  : "bg-rose-50 text-rose-700"
+                              }`}
+                            >
+                              {item.status}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-slate-600">{item.error ?? "Delivered successfully"}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td className="px-4 py-6 text-slate-500" colSpan={3}>
+                          Run a send to see the per-recipient result report here.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </section>
       </div>
