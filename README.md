@@ -5,6 +5,7 @@ A Next.js app for uploading an Excel sheet, previewing recipient rows, and sendi
 ## Features
 
 - Upload `.xlsx` or `.xls` files.
+- Upload `.xlsx`, `.xls`, or `.csv` files.
 - Detect and choose the recipient column.
 - Use template placeholders like `{{Name}}` in the subject and body.
 - Send all emails through a server-side SMTP route.

@@ -260,7 +260,7 @@ export default function Home() {
               </div>
               <label className="cursor-pointer rounded-full bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition hover:opacity-95">
                 Choose file
-                <input className="hidden" type="file" accept=".xlsx,.xls" onChange={handleFileUpload} />
+                <input className="hidden" type="file" accept=".xlsx,.xls,.csv" onChange={handleFileUpload} />
               </label>
             </div>
 
@@ -269,7 +269,7 @@ export default function Home() {
               <p className="mt-2 leading-6">
                 The app automatically looks for <span className="font-semibold">email</span>,{" "}
                 <span className="font-semibold">e-mail</span>, <span className="font-semibold">mail</span>, or a
-                similar column.
+                similar column in Excel or CSV files.
               </p>
 
               <label className="mt-5 block text-sm font-medium text-slate-700">

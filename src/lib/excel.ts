@@ -12,6 +12,8 @@ export type ParsedWorkbook = {
 
 const EMAIL_KEYS = ["email", "e-mail", "mail", "gmail"];
 
+const isCsvFile = (file: File) => file.name.toLowerCase().endsWith(".csv");
+
 const normalizeValue = (value: unknown) => {
   if (value === null || value === undefined) {
     return "";
@@ -25,8 +27,8 @@ const normalizeValue = (value: unknown) => {
 };
 
 export function parseWorkbook(file: File): Promise<ParsedWorkbook> {
-  return file.arrayBuffer().then((buffer) => {
-    const workbook = XLSX.read(buffer, { type: "array" });
+  return (isCsvFile(file) ? file.text() : file.arrayBuffer()).then((input) => {
+    const workbook = XLSX.read(input, { type: isCsvFile(file) ? "string" : "array" });
     const sheetName = workbook.SheetNames[0];
 
     if (!sheetName) {
