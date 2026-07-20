@@ -38,6 +38,32 @@ export function getMailerStatus() {
   };
 }
 
+export async function verifyMailerConnection() {
+  const config = getMailConfig();
+
+  if (!config.host || !config.port || !config.user || !config.pass) {
+    throw new Error("SMTP configuration is incomplete. Set SMTP_HOST, SMTP_PORT, SMTP_USER, and SMTP_PASS.");
+  }
+
+  const transport = nodemailer.createTransport({
+    host: config.host,
+    port: Number(config.port),
+    secure: config.secure === "true" || Number(config.port) === 465,
+    auth: {
+      user: config.user,
+      pass: config.pass,
+    },
+  });
+
+  await transport.verify();
+
+  return {
+    ready: true,
+    host: config.host,
+    port: Number(config.port),
+  };
+}
+
 export async function sendEmail({ to, subject, html }: SendEmailInput) {
   const config = getMailConfig();
 

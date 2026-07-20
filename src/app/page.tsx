@@ -9,6 +9,12 @@ type UploadStatus =
   | { type: "success"; message: string }
   | { type: "error"; message: string };
 
+type ConnectionStatus =
+  | { type: "idle"; message: string }
+  | { type: "checking"; message: string }
+  | { type: "ready"; message: string }
+  | { type: "error"; message: string };
+
 type DeliveryReport = {
   email: string;
   status: "sent" | "failed";
@@ -30,7 +36,12 @@ export default function Home() {
     "Hi {{Name}},\n\nI am following up on the role we discussed. Please let me know if you need any additional information.\n\nBest regards,\nYour Name",
   );
   const [sending, setSending] = useState(false);
+  const [checkingConnection, setCheckingConnection] = useState(false);
   const [deliveryReport, setDeliveryReport] = useState<DeliveryReport[]>([]);
+  const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>({
+    type: "idle",
+    message: "SMTP connection not checked yet.",
+  });
   const [status, setStatus] = useState<UploadStatus>({
     type: "idle",
     message: "Upload an Excel file with one recipient per row.",
@@ -132,6 +143,35 @@ export default function Home() {
     }
   };
 
+  const handleCheckConnection = async () => {
+    setCheckingConnection(true);
+    setConnectionStatus({ type: "checking", message: "Checking SMTP connection..." });
+
+    try {
+      const response = await fetch("/api/test-smtp", {
+        method: "POST",
+      });
+
+      const result = (await response.json()) as { ok?: boolean; message?: string; error?: string };
+
+      if (!response.ok) {
+        throw new Error(result.error ?? "SMTP verification failed.");
+      }
+
+      setConnectionStatus({
+        type: "ready",
+        message: result.message ?? "SMTP connection verified.",
+      });
+    } catch (error) {
+      setConnectionStatus({
+        type: "error",
+        message: error instanceof Error ? error.message : "SMTP verification failed.",
+      });
+    } finally {
+      setCheckingConnection(false);
+    }
+  };
+
   return (
     <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
@@ -192,6 +232,19 @@ export default function Home() {
                   }`}
                 >
                   {status.message}
+                </p>
+                <p
+                  className={`rounded-2xl px-4 py-3 text-sm ${
+                    connectionStatus.type === "error"
+                      ? "bg-rose-50 text-rose-700"
+                      : connectionStatus.type === "ready"
+                        ? "bg-emerald-50 text-emerald-700"
+                        : connectionStatus.type === "checking"
+                          ? "bg-amber-50 text-amber-700"
+                          : "bg-slate-50 text-slate-600"
+                  }`}
+                >
+                  {connectionStatus.message}
                 </p>
               </div>
             </div>
@@ -291,6 +344,15 @@ export default function Home() {
                 disabled={sending || records.length === 0}
               >
                 {sending ? "Sending..." : "Send all emails"}
+              </button>
+
+              <button
+                className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+                type="button"
+                onClick={handleCheckConnection}
+                disabled={checkingConnection}
+              >
+                {checkingConnection ? "Checking..." : "Test SMTP connection"}
               </button>
             </div>
           </div>
