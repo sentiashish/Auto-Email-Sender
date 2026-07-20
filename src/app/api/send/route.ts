@@ -8,6 +8,12 @@ type BulkSendBody = {
   records?: Array<{ email: string; data: Record<string, string> }>;
 };
 
+type DeliveryReport = {
+  email: string;
+  status: "sent" | "failed";
+  error?: string;
+};
+
 export async function POST(request: Request) {
   const payload = (await request.json()) as BulkSendBody;
   const subject = payload.subject?.trim();
@@ -33,26 +39,36 @@ export async function POST(request: Request) {
     );
   }
 
-  const results = await Promise.allSettled(
+  const results: DeliveryReport[] = await Promise.all(
     records.map(async (record) => {
       const html = previewTemplate(body, record.data).replace(/\n/g, "<br />");
-      await sendEmail({
-        to: record.email,
-        subject: previewTemplate(subject, record.data),
-        html,
-      });
 
-      return record.email;
+      try {
+        await sendEmail({
+          to: record.email,
+          subject: previewTemplate(subject, record.data),
+          html,
+        });
+
+        return { email: record.email, status: "sent" as const };
+      } catch (error) {
+        return {
+          email: record.email,
+          status: "failed" as const,
+          error: error instanceof Error ? error.message : "Unknown send error.",
+        };
+      }
     }),
   );
 
-  const sent = results.filter((result) => result.status === "fulfilled").length;
-  const failed = results.filter((result) => result.status === "rejected").length;
+  const sent = results.filter((result) => result.status === "sent").length;
+  const failed = results.filter((result) => result.status === "failed").length;
 
   return NextResponse.json({
     ok: failed === 0,
     sent,
     failed,
     total: records.length,
+    results,
   });
 }

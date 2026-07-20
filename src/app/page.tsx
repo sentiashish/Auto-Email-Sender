@@ -9,6 +9,12 @@ type UploadStatus =
   | { type: "success"; message: string }
   | { type: "error"; message: string };
 
+type DeliveryReport = {
+  email: string;
+  status: "sent" | "failed";
+  error?: string;
+};
+
 const detectEmailColumn = (headers: string[]) => {
   const directMatch = headers.find((header) => /email|e-mail|mail/i.test(header));
   return directMatch ?? headers[0] ?? "email";
@@ -24,6 +30,7 @@ export default function Home() {
     "Hi {{Name}},\n\nI am following up on the role we discussed. Please let me know if you need any additional information.\n\nBest regards,\nYour Name",
   );
   const [sending, setSending] = useState(false);
+  const [deliveryReport, setDeliveryReport] = useState<DeliveryReport[]>([]);
   const [status, setStatus] = useState<UploadStatus>({
     type: "idle",
     message: "Upload an Excel file with one recipient per row.",
@@ -97,17 +104,25 @@ export default function Home() {
         }),
       });
 
-      const result = (await response.json()) as { error?: string; sent?: number; failed?: number; total?: number };
+      const result = (await response.json()) as {
+        error?: string;
+        sent?: number;
+        failed?: number;
+        total?: number;
+        results?: DeliveryReport[];
+      };
 
       if (!response.ok) {
         throw new Error(result.error ?? "Sending failed.");
       }
 
+      setDeliveryReport(result.results ?? []);
       setStatus({
         type: "success",
         message: `Sent ${result.sent ?? 0} of ${result.total ?? records.length} emails.`,
       });
     } catch (error) {
+      setDeliveryReport([]);
       setStatus({
         type: "error",
         message: error instanceof Error ? error.message : "Failed to send emails.",
@@ -319,6 +334,57 @@ export default function Home() {
                     </td>
                   </tr>
                 ) : null}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section className="section-card rounded-[1.75rem] p-5 sm:p-6">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-semibold text-slate-950">Delivery report</h2>
+              <p className="mt-1 text-sm text-slate-500">Latest send results for each recipient.</p>
+            </div>
+            <span className="rounded-full bg-slate-100 px-4 py-2 text-sm font-medium text-slate-600">
+              {deliveryReport.length} rows
+            </span>
+          </div>
+
+          <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+            <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
+              <thead className="bg-slate-50 text-slate-500">
+                <tr>
+                  <th className="px-4 py-3 font-medium">Recipient</th>
+                  <th className="px-4 py-3 font-medium">Status</th>
+                  <th className="px-4 py-3 font-medium">Details</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200">
+                {deliveryReport.length > 0 ? (
+                  deliveryReport.map((item) => (
+                    <tr key={item.email}>
+                      <td className="px-4 py-3 font-medium text-slate-900">{item.email}</td>
+                      <td className="px-4 py-3">
+                        <span
+                          className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
+                            item.status === "sent"
+                              ? "bg-emerald-50 text-emerald-700"
+                              : "bg-rose-50 text-rose-700"
+                          }`}
+                        >
+                          {item.status}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-slate-600">{item.error ?? "Delivered successfully"}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td className="px-4 py-6 text-slate-500" colSpan={3}>
+                      Run a send to see the per-recipient result report here.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
